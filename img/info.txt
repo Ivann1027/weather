@@ -1,0 +1,11 @@
+bg
+- lc: #4a3790
+- rc: #b83a81
+
+blue-dark-top: #40adce
+blue-light-bottom: #69bbd3
+
+orange-dark-bottom: #62b8d3
+orange-light-top: #f8ce78
+
+dark: #2b526f

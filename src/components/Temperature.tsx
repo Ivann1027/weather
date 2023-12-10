@@ -6,7 +6,7 @@ const Temperature: React.FC<ITempProps> = ({temp}) => {
 
 
 	return (
-		<div>
+		<div className="temperature">
 			{temp}
 		</div>
 	)

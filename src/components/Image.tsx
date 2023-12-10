@@ -8,8 +8,8 @@ const Image: React.FC<IImgProps> = ({icon, text}) => {
 
 
 	return (
-		<div>
-			<img src={icon} alt={text} />
+		<div className="image">
+			<img className="imageImg" src={icon} alt={text} />
 			<p>{text}</p>
 		</div>
 	)

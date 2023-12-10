@@ -1,31 +1,19 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import './App.css'
+import ChooseCity from './components/ChooseCity'
 import CurrentDate from './components/CurrentDate'
 import Time from './components/Time'
 import City from './components/City'
 import Image from './components/Image'
 import Temperature from './components/Temperature'
+import { WeatherData } from './type/types'
 
-interface IWeatherData {
-	location: {
-		name: string
-		country: string
-	}
-	current: {
-		temp_c: number
-		condition: {
-			text: string
-			icon: string
-		}
-	}
-}
+const App = () => {
 
-const App: React.FC = () => {
-
-	const [weatherData, setWeatherData] = useState<IWeatherData | null>(null)
+	const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
 	const API_KEY: string = 'f04d71edde014f7d869110721230912'
-	const city: string = 'Moscow'
+	const [city, setCity] = useState<string>('Madrid')
+	const [choice, setChoice] = useState<boolean>(true)
 	
 
 	useEffect(() => {
@@ -35,11 +23,11 @@ const App: React.FC = () => {
 				console.log(response.data)
 				setWeatherData(response.data)
 			} catch (error) {
-				console.error(error)
-			}
+				console.log('У вас ошибка', error)
+			} 
 		}
 		fetchWeatherData()
-	}, [])
+	}, [city])
 
 	if (!weatherData) {
 		return <div>Loading...</div>
@@ -47,9 +35,10 @@ const App: React.FC = () => {
 
   return (
 		<div className="App">
+			<ChooseCity choice={choice} setChoice={setChoice} setCity={setCity} />
 			<CurrentDate />
 			<Time />
-			<City city={weatherData.location.name} country={weatherData.location.country} />
+			<City setChoice={setChoice} city={weatherData.location.name} country={weatherData.location.country} />
 			<Image icon={weatherData.current.condition.icon} text={weatherData.current.condition.text} />
 			<Temperature temp={weatherData.current.temp_c} />
     </div>
@@ -57,9 +46,5 @@ const App: React.FC = () => {
 }
 
 export default App
-
-
-// my api key b44efdc2434e878ce6f880a205003240
-// my new api key 52f057bb2deb767a599c199efed6bc6f
 
 // my key from weatherAPI f04d71edde014f7d869110721230912

@@ -5,10 +5,12 @@ const Time = () => {
 	const currentTime: string = gettingTime()
 
 	return (
-		<div>
+		<div className="time">
 			{currentTime}
 		</div>
 	)
 }
 
 export default Time
+
+// Реализовать обновление времени на странице
