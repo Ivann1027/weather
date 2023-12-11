@@ -2,10 +2,8 @@ bg
 - lc: #4a3790
 - rc: #b83a81
 
-blue-dark-top: #40adce
-blue-light-bottom: #69bbd3
+blue: linear-gradient(to bottom, #40adce, #69bbd3)
 
-orange-dark-bottom: #62b8d3
-orange-light-top: #f8ce78
+orange: linear-gradient(to bottom, #f8ce78, #f2a184)
 
-dark: #2b526f
+dark: linear-gradient(to bottom, #2b526f, #494276)

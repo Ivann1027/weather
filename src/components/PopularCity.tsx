@@ -1,16 +1,19 @@
 import { CityInfo } from "../type/types"
+import { useAppDispatch } from "../redux/hooks"
+import { active } from "../redux/choiceSlice"
+import { change } from "../redux/citySlice"
 
 interface IPopularCityProps {
 	city: CityInfo
-	setCity: React.Dispatch<React.SetStateAction<string>>
-	setChoice: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const PopularCity: React.FC<IPopularCityProps> = ({city, setCity, setChoice}) => {	
+const PopularCity: React.FC<IPopularCityProps> = ({ city }) => {	
+
+	const dispatch = useAppDispatch()
 	
 	const handleClick = () => {
-		setCity(city.city)
-		setChoice(false)
+		dispatch(change(city.city))
+		dispatch(active())
 	}
 
 	return (

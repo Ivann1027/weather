@@ -1,16 +1,17 @@
-
+import { useAppDispatch } from "../redux/hooks"
+import { active } from "../redux/choiceSlice"
 
 interface ICityProps {
-	setChoice: React.Dispatch<React.SetStateAction<boolean>>
 	city: string
 	country: string
 }
 
-const City: React.FC<ICityProps> = ({setChoice, city, country}) => {
+const City: React.FC<ICityProps> = ({ city, country}) => {
 
+	const dispatch = useAppDispatch()
 
 	return (
-		<div onClick={() => setChoice(true)} className="city">
+		<div onClick={() => dispatch(active())} className="city">
 			{city}, {country}
 		</div>
 	)

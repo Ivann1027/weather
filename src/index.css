@@ -28,7 +28,7 @@ body, html {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	background: linear-gradient(to bottom, #40adce, #69bbd3);
+	/* background: linear-gradient(to bottom, #40adce, #69bbd3); */
 	color: #fff;
 	overflow: hidden;
 }

@@ -1,25 +1,24 @@
 import { useState } from "react"
 import { popularCities } from "../data/popularCities"
 import PopularCity from "./PopularCity"
+import { useAppDispatch, useAppSelector } from "../redux/hooks"
+import { active } from "../redux/choiceSlice"
+import { change } from "../redux/citySlice"
 
-interface IChooseCityProps {
-	choice: boolean
-	setChoice: React.Dispatch<React.SetStateAction<boolean>>
-	setCity: React.Dispatch<React.SetStateAction<string>>
-}
-
-const ChooseCity: React.FC<IChooseCityProps> = ({choice, setChoice, setCity}) => {
+const ChooseCity = () => {
 
 	const [desiredCity, setDesiredCity] = useState<string>('')
+	const dispatch = useAppDispatch()
+	const choice = useAppSelector(state => state.choice.value)
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setDesiredCity(event.target.value)
 	}
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault()
-		setCity(desiredCity)
+		dispatch(change(desiredCity))
 		setDesiredCity('')
-		setChoice(false)
+		dispatch(active())
 	}
 
 	return (
@@ -30,7 +29,7 @@ const ChooseCity: React.FC<IChooseCityProps> = ({choice, setChoice, setCity}) =>
 			</form>
 			<div>
 				{popularCities.map(city => (
-					<PopularCity city={city} setCity={setCity} setChoice={setChoice} key={city.id} />
+					<PopularCity city={city} key={city.id} />
 				))}
 			</div>
 		</div>

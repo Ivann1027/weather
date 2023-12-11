@@ -6,21 +6,23 @@ import Time from './components/Time'
 import City from './components/City'
 import Image from './components/Image'
 import Temperature from './components/Temperature'
-import { WeatherData } from './type/types'
+import { WeatherData, Theme } from './type/types'
+import { useAppSelector } from './redux/hooks'
 
 const App = () => {
 
 	const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
+	const [curTemp, setCurTemp] = useState<number | null>(null)
 	const API_KEY: string = 'f04d71edde014f7d869110721230912'
-	const [city, setCity] = useState<string>('Madrid')
-	const [choice, setChoice] = useState<boolean>(true)
-	
+	const city = useAppSelector(state => state.city.value)
+	let theme: Theme = Theme.BLUE
 
 	useEffect(() => {
 		const fetchWeatherData = async () => {
 			try {
 				const response = await axios.get(`https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}`)
 				console.log(response.data)
+				setCurTemp(response.data.current.temp_c)
 				setWeatherData(response.data)
 			} catch (error) {
 				console.log('У вас ошибка', error)
@@ -29,16 +31,26 @@ const App = () => {
 		fetchWeatherData()
 	}, [city])
 
+	if (curTemp) {
+		if (curTemp >= 24) {
+			theme = Theme.ORANGE
+		} else if (curTemp < 5) {
+			theme = Theme.DARK
+		} else {
+			theme = Theme.BLUE
+		}
+	}
+
 	if (!weatherData) {
 		return <div>Loading...</div>
 	}
 
   return (
-		<div className="App">
-			<ChooseCity choice={choice} setChoice={setChoice} setCity={setCity} />
+		<div style={{background: theme}} className="App">
+			<ChooseCity />
 			<CurrentDate />
 			<Time />
-			<City setChoice={setChoice} city={weatherData.location.name} country={weatherData.location.country} />
+			<City city={weatherData.location.name} country={weatherData.location.country} />
 			<Image icon={weatherData.current.condition.icon} text={weatherData.current.condition.text} />
 			<Temperature temp={weatherData.current.temp_c} />
     </div>

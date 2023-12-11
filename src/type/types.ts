@@ -19,3 +19,9 @@ export type CityInfo = {
 }
 
 export type PopularCities = CityInfo[]
+
+export enum Theme {
+	BLUE = 'linear-gradient(to bottom, #40adce, #69bbd3)',
+	ORANGE = 'linear-gradient(to bottom, #f8ce78, #f2a184)',
+	DARK = '#2b526f'
+}
