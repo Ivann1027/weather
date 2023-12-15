@@ -7,41 +7,32 @@ import City from './components/City'
 import Image from './components/Image'
 import Temperature from './components/Temperature'
 import { WeatherData, Theme } from './type/types'
-import { useAppSelector } from './redux/hooks'
+import { useAppDispatch, useAppSelector } from './redux/hooks'
+import { fetchWeather } from './hooks/fetchWeather'
 
 const App = () => {
 
-	const [weatherData, setWeatherData] = useState<WeatherData | null>(null)
-	const [curTemp, setCurTemp] = useState<number | null>(null)
-	const API_KEY: string = 'f04d71edde014f7d869110721230912'
+	const temp = useAppSelector(state => state.temp.value)
+	const weather: WeatherData = useAppSelector(state => state.weather) 
+	const dispatch = useAppDispatch()
 	const city = useAppSelector(state => state.city.value)
 	let theme: Theme = Theme.BLUE
 
 	useEffect(() => {
-		const fetchWeatherData = async () => {
-			try {
-				const response = await axios.get(`https://api.weatherapi.com/v1/current.json?key=${API_KEY}&q=${city}`)
-				console.log(response.data)
-				setCurTemp(response.data.current.temp_c)
-				setWeatherData(response.data)
-			} catch (error) {
-				console.log('У вас ошибка', error)
-			} 
-		}
-		fetchWeatherData()
+		dispatch(fetchWeather(city))
 	}, [city])
 
-	if (curTemp) {
-		if (curTemp >= 24) {
+	if (temp) {
+		if (temp >= 24) {
 			theme = Theme.ORANGE
-		} else if (curTemp < 5) {
+		} else if (temp < 5) {
 			theme = Theme.DARK
 		} else {
 			theme = Theme.BLUE
 		}
 	}
 
-	if (!weatherData) {
+	if (!weather) {
 		return <div>Loading...</div>
 	}
 
@@ -50,9 +41,9 @@ const App = () => {
 			<ChooseCity />
 			<CurrentDate />
 			<Time />
-			<City city={weatherData.location.name} country={weatherData.location.country} />
-			<Image icon={weatherData.current.condition.icon} text={weatherData.current.condition.text} />
-			<Temperature temp={weatherData.current.temp_c} />
+			<City city={weather.location.name} country={weather.location.country} />
+			<Image icon={weather.current.condition.icon} text={weather.current.condition.text} />
+			<Temperature temp={weather.current.temp_c} />
     </div>
   )
 }
